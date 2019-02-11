@@ -178,12 +178,12 @@ fi
 color '35;1' 'Ensuring setuptools and pip versions...'
 # Need up-to-date pyparsing or upgrading pip will break pip
 # https://github.com/pypa/packaging/issues/94
-pip install 'pyparsing==2.2.0'
+pip install 'pyparsing==2.2.0' -i https://pypi.python.org/simple
 # If python-setuptools is actually the old 'distribute' fork of setuptools,
 # then the first 'pip install setuptools' will be a no-op.
-pip install 'pip==9.0.1' 'setuptools==34.3.1'
+pip install 'pip==9.0.1' 'setuptools==34.3.1' -i https://pypi.python.org/simple
 hash pip        # /usr/bin/pip might now be /usr/local/bin/pip
-pip install 'pip==9.0.1' 'setuptools==34.3.1'
+pip install 'pip==9.0.1' 'setuptools==34.3.1' -i https://pypi.python.org/simple
 
 # Doing pip upgrade setuptools leaves behind this problematic symlink
 rm -rf /usr/lib/python2.7/dist-packages/setuptools.egg-info
@@ -191,6 +191,7 @@ rm -rf /usr/lib/python2.7/dist-packages/setuptools.egg-info
 # Install tox for running tests
 pip install 'tox'
 
+pip install 'chardet==3.0.2'
 # Now that the new version of pip and our other non-pip dependencies are
 # installed, we can switch back to the source directory.
 cd "$src_dir"
@@ -252,7 +253,7 @@ fi
 # right
 chmod 0600 $dest
 chown $SUDO_UID:$SUDO_GID $dest
-
+mv /usr/local/lib/python2.7/dist-packages/inbox /usr/local/lib/python2.7/dist-packages/inbox.bak
 if ! $prod; then
     # Mysql config
     color '35;1' 'Copying default mysql configuration to /etc/mysql/conf.d'
